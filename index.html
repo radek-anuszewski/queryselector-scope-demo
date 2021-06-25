@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuerySelector demo</title>
+  <style>
+    body {
+        padding: 25px;
+    }
+    .parent,
+    .child {
+        padding: 20px;
+        background: white;
+    }
+    .black {
+        background: black;
+        color: white;
+    }
+    .child-1 {
+        border: 3px solid red;
+    }
+    .child-2 {
+        border: 3px solid green;
+    }
+    .child-3 {
+        border: 3px solid blue;
+    }
+  </style>
+  <script type="module">
+    const child1 = document.querySelector('.child-1');
+
+    document.querySelector('#select').addEventListener('click', () => {
+      const scoped = document.querySelector('#scoped').checked;
+      const selector = `${scoped ? ':scope ' : ''}.parent .child`;
+      const elements = [...child1.querySelectorAll(selector)];
+      elements.forEach(element => element.classList.add('black'));
+    });
+    document.querySelector('#clear').addEventListener('click', () => {
+      [...document.querySelectorAll('.child')].forEach(el => el.classList.remove('black'));
+    })
+  </script>
+</head>
+<body>
+<h1>querySelector demo</h1>
+<div>
+  <label>Scoped? <input type="checkbox" id="scoped"></label>
+  <br>
+  <button id="select">Select elements with ".parent .child" selector from .child-1 element </button>
+  <button id="clear">Clear </button>
+</div>
+<div class="parent">
+  Parent
+  <div class="child child-1">
+    Child outer
+    <div class="child child-2">
+      Child inner
+      <div class="child child-3">
+        Child
+        <div class="parent child-1">
+          Child but also a parent
+          <div class="child child-2">
+            Child
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
